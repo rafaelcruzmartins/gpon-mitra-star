@@ -1,0 +1,173 @@
+# Plano de investigação: TP-Link XZ000-G7 na conexão Vivo
+
+Elaborado em 10/11/2026. **Status: planejado; nenhum teste novo executado.**
+
+## Objetivo e resultado esperado
+
+Determinar em qual etapa a substituição da MitraStar GPT-2741GNAC-N1 pelo TP-Link XZ000-G7 falha e verificar, com testes controlados, se existe uma configuração funcional. A conexão de referência continua sendo MitraStar em bridge com Huawei WiFi Mesh 7.
+
+Um resultado útil pode ser uma configuração reproduzivelmente funcional ou a identificação documentada de uma falha ainda sem solução. O plano não pressupõe que o G7 funcionará, não atribui antecipadamente a causa à Vivo e não promete ausência de interrupção ou de perda de gerenciamento.
+
+## Hipóteses incorporadas e ajustes de método
+
+| Proposta recebida | Decisão para este plano | Evidência necessária |
+|---|---|---|
+| HGU/SFU e VEIP/PPTP podem explicar a falha de UNI | Investigar, sem presumir que uma ONU de uma porta não implemente VEIP | Entidades OMCI expostas, associações solicitadas e primeira operação que falha |
+| Software Version divergente pode influenciar o provisionamento | Testar somente se o campo puder ser alterado e revertido de forma documentada | Valor realmente anunciado em OMCI, comparação antes/depois e repetição |
+| Coletar dados reais da MitraStar | Fazer antes de mover a fibra | Versões ativas, identificação e configuração do serviço; dados sensíveis guardados privadamente |
+| Preservar br0 | Adotar como requisito, incluindo as interfaces que transportam o gerenciamento | Caminho de acesso identificado e retorno à configuração anterior preparado |
+| Capturar OMCI e estado O5 | Priorizar antes das alterações | Logs cronológicos completos e estado dos objetos no mesmo intervalo |
+| Configurar VLAN 10 no Huawei | Não fixar antecipadamente | VLAN do serviço e tratamento de tags na saída Ethernet do G7 |
+| PADO ou IP público como prova de sucesso | Separar as etapas | Descoberta PPPoE, sessão, autenticação, endereço/rotas e tráfego funcional |
+| Três testes isolam definitivamente a causa | Substituir por comparação controlada | Uma variável por vez, retorno à referência e resultado repetível |
+
+Alterar a string de versão não instala outro firmware. Alterar um campo HGU/SFU não demonstra, por si só, quais entidades o firmware passa a expor. Um resultado positivo após reiniciar também pode depender do estado anterior da rede; é necessário repetir e comparar.
+
+## Etapa 0 — Preparar o retorno à conexão funcional
+
+1. Reservar um período em que a interrupção da internet seja aceitável. Os testes exigem mover a fibra; não serão feitos simultaneamente à conexão de produção pela MitraStar.
+2. Registrar cabos, portas e configurações atuais da MitraStar e do Huawei. Exportar backups quando a interface oferecer essa função.
+3. Guardar privadamente as credenciais e identificadores necessários à restauração. Não publicar etiquetas ou dumps completos sem revisão.
+4. Confirmar o acesso local ao G7, seu endereço e o caminho usado pelo computador. Registrar a configuração de rede do computador para restaurá-la depois.
+5. Verificar como reverter cada campo que se pretende alterar, inclusive se a alteração é persistente e se exige reinício.
+6. Manter a MitraStar disponível para reconectar a fibra e restaurar a topologia anterior. Não modificar sua configuração funcional durante os testes do G7.
+
+**Critério de avanço:** configuração de referência registrada e procedimento de retorno conhecido. Se não houver forma verificada de reverter uma alteração do G7, essa alteração não entra na sessão de testes.
+
+**Limites:** não desativar br0, remover sua interface Ethernet, trocar o IP de gerenciamento ou recriar bridges como parte dos testes ópticos. A interface web não é um acesso independente do caminho de rede. Reset de fábrica e acesso serial não são garantias de recuperação; não integram este plano como procedimentos presumidamente seguros.
+
+## Etapa 1 — Registrar a MitraStar que efetivamente funciona
+
+Com a conexão ainda na MitraStar, coletar pela interface disponível, sem modificar parâmetros:
+
+- Modelo, revisão de hardware e versão de software em execução.
+- Serial GPON e demais identificadores necessários, em registro privado, distinguindo serial de sistema, MAC e serial GPON.
+- Configuração do serviço de internet: bridge, porta associada, VLAN e tratamento de tags, quando visíveis.
+- Configuração WAN do Huawei: PPPoE, presença ou ausência de VLAN, endereço e rotas obtidos.
+- Estado óptico e identificação remota disponíveis, sem confundir fabricante do módulo óptico com fabricante da OLT.
+
+**Resultado:** tabela de valores observados e campos indisponíveis. A versão de uma declaração de conformidade não substitui a versão ativa. Campo não exibido permanece desconhecido.
+
+## Etapa 2 — Coletar a referência inicial do G7 sem alterações
+
+Conectar o computador diretamente ao G7. Primeiro, com a fibra desconectada, registrar identidade, firmware, configuração local e gerenciamento. A consulta `gccli sys show` já foi observada no histórico, mas sua saída contém dados sensíveis e precisa ser tratada como privada antes de qualquer publicação.
+
+Antes de usar outras consultas, identificar os comandos de leitura realmente suportados pela ajuda/documentação da versão instalada. Não inventar comandos de gravação, tabelas ou sintaxes com base em outro equipamento.
+
+Em seguida, durante o período de testes, mover a fibra para o G7 e registrar:
+
+| Camada | Evidência a obter |
+|---|---|
+| Óptica e registro | Estado GPON ao longo do tempo, alarmes e potência óptica disponível |
+| Identidade remota | Atributos remotos disponibilizados por OMCI, se acessíveis, com a origem do campo |
+| OMCI | Sequência completa desde a conexão/reinício, respostas e primeiro erro |
+| Objetos de serviço | Instâncias e atributos relevantes de TCONT, GEM, UNI/VEIP e associações |
+| Ethernet/gerenciamento | Interfaces, bridge, endereços e contadores, somente por leitura |
+| Serviço | Presença de tráfego e eventual resposta PPPoE, se o caminho permitir testar |
+
+Usar inicialmente uma janela de observação de 3 a 5 minutos, como convenção de coleta, não como prazo de sucesso ou rejeição da OLT. Registrar duração real, reinícios e mudanças de estado. Se o equipamento não expuser logs completos, registrar essa limitação sem concluir que não houve comunicação OMCI.
+
+**Critério de avanço:** referência inicial salva e erro contextualizado. Se nem o registro óptico estabilizar, investigar essa etapa antes de alterar strings de identidade ou VLAN. Se TCONT/GEM já existirem, não assumir que o erro antigo continua presente.
+
+## Etapa 3 — Verificar a hipótese HGU/SFU e UNI/VEIP
+
+A hipótese é uma incompatibilidade entre o perfil solicitado e as entidades implementadas ou anunciadas pelo G7. `FlowOperation UNI is NULL` isoladamente não identifica qual objeto faltou nem se essa é a primeira falha.
+
+1. Verificar se o firmware documenta alteração de HGU/SFU, quais efeitos ela produz e como revertê-la.
+2. Identificar, quando a interface de diagnóstico permitir, as entidades PPTP Ethernet UNI (classe 11) e VEIP (classe 329), suas instâncias e associações.
+3. Comparar o que é exposto pelo G7 com as operações OMCI recebidas. Presença de um objeto não prova que toda a associação do fluxo esteja correta.
+4. Se o teste de modo for viável, mudar somente HGU/SFU. Manter versão de software, identificadores e demais parâmetros iguais aos da referência.
+5. Após a mudança, verificar o que de fato foi alterado, a persistência após reinício quando aplicável e o impacto no gerenciamento. Repetir a coleta da etapa 2.
+6. Reverter ao modo inicial e repetir a observação. Se houver melhoria, voltar ao modo candidato para confirmar a repetibilidade.
+
+**Evidência favorável:** mudança reproduzível nas entidades/associações e desaparecimento da falha correspondente, acompanhados de provisionamento mais completo. **Conclusão insuficiente:** somente o campo local mudar ou somente O5 aparecer.
+
+Se a alteração de modo modificar automaticamente outros campos, registrar todas as diferenças: o teste deixa de isolar uma única variável. Não forçar um resultado atribuindo-o exclusivamente ao VEIP.
+
+## Etapa 4 — Verificar a hipótese Software Version
+
+Executar depois de restabelecer uma configuração de referência conhecida. Não combinar inicialmente esse teste com a mudança HGU/SFU.
+
+1. Obter a versão ativa da MitraStar; não usar automaticamente a string da declaração de conformidade.
+2. Confirmar que o campo do G7 é editável, reversível e relevante ao atributo anunciado por OMCI. Se isso não puder ser verificado, registrar a limitação e adiar a alteração.
+3. Alterar somente essa string, sem trocar firmware ou outros campos de identidade.
+4. Registrar valor local e, se disponível, valor efetivamente anunciado, além da sequência OMCI e objetos de serviço.
+5. Reverter à string inicial e repetir. Se o comportamento mudar, reaplicar o valor candidato para confirmar.
+
+**Evidência favorável:** alteração reproduzível do provisionamento associada à string anunciada. Isso sustenta influência do atributo, mas não demonstra sozinho a regra interna exata da OLT. **Sem efeito:** não comprova que todas as diferenças de firmware sejam irrelevantes.
+
+Se os testes isolados forem viáveis mas inconclusivos, uma combinação HGU/SFU × versão pode ser avaliada depois, em matriz de quatro configurações. Cada passagem deve mudar apenas um fator e registrar efeitos automáticos. A combinação não é pré-requisito nem deve ser tentada quando a reversão ou o gerenciamento estiverem incertos.
+
+## Etapa 5 — Localizar VLAN e negociação PPPoE
+
+Avançar quando houver indícios de um caminho de serviço provisionado. TCONT/GEM presentes não garantem, sozinhos, que o tráfego Ethernet esteja sendo encaminhado corretamente.
+
+1. Comparar a configuração do serviço funcional da MitraStar com o que o G7 aplica. Separar VLAN do serviço óptico de VLAN exigida na saída Ethernet.
+2. Determinar se o G7 entrega quadros marcados, remove tags ou faz tradução. Usar configuração de leitura e captura de tráfego quando disponíveis.
+3. Escolher um único cliente PPPoE por teste: Huawei ou computador de teste. Registrar interface e marcação usada.
+4. Testar primeiro a configuração sustentada pela observação. VLAN 10 é apenas candidata se houver evidência para esse serviço; não é uma conclusão baseada somente em estar em São Paulo.
+5. Capturar ou registrar as etapas separadamente: PADI enviado, PADO recebido, PADR/PADS, autenticação, negociação IP e tráfego funcional.
+6. Se houver dúvida sobre a captura, verificar se o adaptador ou seu driver oculta tags antes de concluir que o tráfego é sem VLAN.
+
+| Observação | Interpretação limitada |
+|---|---|
+| Sem PADO | Ainda há dúvida sobre o caminho de descoberta: encaminhamento, VLAN, serviço ou resposta remota; não prova senha errada |
+| PADO recebido | Há resposta à descoberta; não prova sessão autenticada |
+| Sessão criada, autenticação falha | Investigar autenticação e política da sessão com o log correspondente |
+| Endereço recebido, sem navegação | Verificar rotas, DNS, MTU e tráfego; não atribuir automaticamente a OMCI |
+| Internet funcional | Registrar configuração completa e verificar estabilidade/reprodução |
+
+Receber um IP público não é condição universal para considerar o acesso à internet funcional. Registrar o tipo de endereço separadamente de conectividade, IPv6 e alcance de serviços externos.
+
+## Etapa 6 — Confirmar sucesso ou encerrar a sessão
+
+Uma configuração candidata só será registrada como funcional depois de:
+
+- Completar a conexão PPPoE e transportar tráfego real.
+- Manter gerenciamento acessível ou ter seu comportamento documentado.
+- Repetir o resultado após um reinício controlado do G7.
+- Passar por uma janela inicial de observação de 30 minutos, registrando quedas e renegociações. Essa janela é triagem, não comprovação de estabilidade prolongada.
+- Ter todos os parâmetros e diferenças em relação à referência registrados.
+
+Ao terminar a sessão, retornar à MitraStar se não houver configuração funcional validada. Confirmar novamente PPPoE e tráfego pelo Huawei. Perda de gerenciamento, alterações não previstas ou impossibilidade de reverter um campo encerram a sequência de modificações: não acumular novas mudanças para tentar recuperar o experimento.
+
+Se a coleta não permitir fechar a causa, registrar o ponto mais específico demonstrado — por exemplo, uma operação OMCI rejeitada — e o próximo dado necessário. Não converter a falta de logs em prova de bloqueio da operadora.
+
+## Registro de cada teste
+
+Copiar este modelo para uma nota privada; publicar somente uma versão revisada e sem credenciais:
+
+```text
+ID do teste:
+Data/hora e fuso:
+Objetivo/hipótese:
+Configuração de referência:
+Única variável alterada e valor anterior/novo:
+Outros campos alterados automaticamente:
+Método de alteração e reversão verificados:
+Fibra conectada em qual equipamento:
+Reinícios e duração de observação:
+Estado GPON e alarmes:
+Identificação remota e origem do atributo:
+Primeira falha OMCI, horário e contexto:
+TCONT/GEM/UNI/VEIP e associações observadas:
+VLAN/tratamento de tags:
+Etapas PPPoE observadas:
+Gerenciamento permaneceu acessível?:
+Resultado do tráfego e estabilidade:
+Resultado ao reverter e repetir:
+Arquivos de evidência privados:
+Conclusão sustentada / dúvidas restantes:
+Retorno à conexão de referência confirmado?:
+```
+
+Atualizar [tentativas.md](tentativas.md) somente depois da execução, distinguindo observação direta de interpretação. Dumps e capturas podem conter senhas, identificadores e tráfego pessoal; revisar seu conteúdo antes de adicioná-los ao Git. Não basta ocultá-los na descrição se continuarem presentes no arquivo anexado.
+
+## Referências técnicas e alcance
+
+- [ITU-T G.988 — modelo OMCI](https://www.itu.int/ITU-T/recommendations/rec.aspx?lang=en&rec=15125): entidades e atributos; não revela o perfil específico da conexão Vivo.
+- [Broadband Forum TR-280 Issue 2](https://www.broadband-forum.org/pdfs/tr-280-2-0-0.pdf): modelos de gerenciamento e interfaces VEIP/PPTP. Não permite deduzir a implementação de uma versão do G7 apenas pela quantidade de portas.
+- [TP-Link XZ000-G7](https://service-provider.tp-link.com/tr/gpon/xz000-g7/): características e interfaces de gerenciamento; não garante compatibilidade com uma OLT específica.
+- [Fontes do histórico](fontes.md): origem dos relatos e limites da reconstrução anterior.
+
+Este plano incorpora as hipóteses da análise recebida sobre HGU/SFU e versão de software, mas condiciona cada teste à evidência observável e à reversibilidade. Cadastro por técnico, troca de OLT, instalação de firmware alternativo, alteração de MAC e recriação manual de bridges ficam fora da sequência inicial por não haver indicação suficiente de que resolveriam a primeira falha.

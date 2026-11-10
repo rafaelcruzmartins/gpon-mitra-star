@@ -2,6 +2,8 @@
 
 Esta tabela separa o que foi executado do que foi apenas sugerido. Uma tentativa proposta não deve ser interpretada como teste concluído.
 
+As próximas etapas estão no [plano de investigação](plano-investigacao.md). Os testes desse plano ainda não foram executados e não alteram os resultados históricos desta tabela.
+
 | Etapa | Objetivo | Evidência recuperada | Resultado / limite |
 |---|---|---|---|
 | Comparação G3 × G7 | Escolher o terminal | Pergunta em fevereiro de 2025 | Resposta genérica, sem comparação técnica comprovada |
