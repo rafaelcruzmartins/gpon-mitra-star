@@ -2,7 +2,7 @@
 
 Esta tabela separa o que foi executado do que foi apenas sugerido. Uma tentativa proposta não deve ser interpretada como teste concluído.
 
-As próximas etapas estão no [plano de investigação](plano-investigacao.md). Os testes desse plano ainda não foram executados e não alteram os resultados históricos desta tabela.
+As próximas etapas estão no [plano de investigação](../plano/plano-2026-11-10.md). Os testes desse plano ainda não foram executados e não alteram os resultados históricos desta tabela.
 
 | Etapa | Objetivo | Evidência recuperada | Resultado / limite |
 |---|---|---|---|

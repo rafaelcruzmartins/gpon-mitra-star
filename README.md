@@ -22,7 +22,7 @@ Fibra da Vivo → MitraStar em bridge → Huawei WiFi Mesh 7 → dispositivos
 
 ## Documentação
 
-- [Plano de investigação e testes controlados](docs/plano-investigacao.md)
+- [Plano de investigação e testes controlados](plano/plano-2026-11-10.md)
 - [Histórico detalhado e análise das tentativas](docs/historico.md)
 - [Matriz de tentativas e resultados](docs/tentativas.md)
 - [Fontes e limites da reconstrução](docs/fontes.md)
