@@ -21,8 +21,12 @@ Outras conversas sobre DNS personalizado e regras NAT no Huawei foram consultada
 
 1. [TP-Link — XZ000-G7: características e especificações](https://service-provider.tp-link.com/tr/gpon/xz000-g7/). Confirma uma porta PON, uma porta Ethernet Gigabit, gerenciamento local Web/Telnet e remoto OMCI. Não comprova compatibilidade com a central específica deste relato.
 2. [Linux man-pages — ip-link(8)](https://man7.org/linux/man-pages/man8/ip-link.8.html). Distingue criação de interface virtual de alteração do estado da interface; fundamenta a correção da interpretação dada ao teste com uma interface VLAN inexistente.
+3. [TripleOxygen — TP-Link XZ000-G7 (BR) V1.0](https://www.tripleoxygen.net/wiki/ont/tplink/xz000-g7-br-v1). Flash de 4 MB, mapa de partições de fábrica e firmware modificado com shell. Usada para conferir o guia de instalação recebido.
+4. [`AliLostInTheDark/openwrt-galachip`, branch `xz000-g7-wip`](https://github.com/AliLostInTheDark/openwrt-galachip/tree/xz000-g7-wip). README, `SECURITY_MODEL.md` e instruções de U-Boot consultados no commit `2d70e38`. Afirmações do projeto, sem teste nesta conexão.
 
-Consultadas na consolidação de 10/11/2026. Não foram usadas para atribuir ao usuário resultados de testes de terceiros.
+As referências 1 e 2 foram consultadas na consolidação de 10/11/2026; as 3 e 4, em 13/11/2026, para o [levantamento de firmware alternativo](firmware-alternativo.md).
+
+Nenhuma delas foi usada para atribuir ao usuário resultados de testes de terceiros.
 
 ## Critérios editoriais
 
