@@ -1,6 +1,6 @@
 # Firmware alternativo para o XZ000-G7: levantamento e limites
 
-Levantamento feito em 13/11/2026. **Status: pesquisa documental.** Depois deste levantamento, no mesmo dia, o `openwrt-galachip` foi instalado neste G7 sem adaptador serial; ver [OpenWrt sem adaptador serial](openwrt-sem-adaptador-serial.md). O teste com a fibra da Vivo ainda não foi feito.
+Levantamento feito em 13/11/2026. **Status: pesquisa documental.** Depois deste levantamento, no mesmo dia, o `openwrt-galachip` foi instalado neste G7 sem adaptador serial; ver [OpenWrt sem adaptador serial](openwrt-sem-adaptador-serial.md). Em 14/11/2026, o [teste com a fibra](teste-fibra-2026-11-14.md) obteve internet com esse firmware.
 
 O histórico não fecha a causa da falha porque faltam os logs OMCI completos (ver [histórico](historico.md), seção 8, e [plano](../plano/plano-2026-11-10.md), etapa 2.1). O firmware de fábrica usa um daemon OMCI fechado (`gc_omcid`), com pouca visibilidade. Este documento registra os firmwares e as ferramentas da comunidade que poderiam ampliar essa visibilidade, o que foi possível verificar em suas fontes e o que continua sem demonstração para a conexão Vivo.
 

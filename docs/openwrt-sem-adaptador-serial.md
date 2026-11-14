@@ -1,6 +1,6 @@
 # OpenWrt no G7 sem adaptador serial
 
-Executado em 13/11/2026 neste aparelho (XZ000-G7 BR V1.0, 4 MB). **Resultado: o OpenWrt do [`openwrt-galachip`](https://github.com/AliLostInTheDark/openwrt-galachip) foi gravado pelo Telnet do firmware TripleOxygen e iniciou da flash.** O serviço GPON ainda não foi testado com a fibra.
+Executado em 13/11/2026 neste aparelho (XZ000-G7 BR V1.0, 4 MB). **Resultado: o OpenWrt do [`openwrt-galachip`](https://github.com/AliLostInTheDark/openwrt-galachip) foi gravado pelo Telnet do firmware TripleOxygen e iniciou da flash.** O teste com a fibra, em 14/11/2026, está em [teste com a fibra](teste-fibra-2026-11-14.md).
 
 O caminho oficial do projeto exige UART: boot em RAM pelo U-Boot, backup e `sysupgrade`. Aqui não havia adaptador serial, então o backup e a gravação foram feitos a partir do sistema de fábrica em execução, usando ferramentas próprias que estão em [`ferramentas/`](../ferramentas/README.md).
 
@@ -51,7 +51,7 @@ Neste aparelho, a sessão Telnet sobreviveu até o fim da gravação, que levou 
 | Sistema | `OpenWrt SNAPSHOT r37800-2d70e38661`, Linux 6.18.55 |
 | Gerenciamento | 192.168.1.1, LuCI e SSH; sem DHCP; PC em IP fixo na mesma rede |
 | GPON sem fibra | `omcid` em execução, estado `O1`, `los=1`; esperado com a fibra desconectada |
-| Identidade | Serial e senha GPON, vendor `MSTC` e equipment ID `GPT-2741GNAC-N1` aplicados por `uci`; versões de hardware/software e tipo de ONU mantidos no padrão do projeto (`XZ000-G7 v1.0`, SFU) |
+| Identidade | Serial e senha GPON, vendor `MSTC` e equipment ID `GPT-2741GNAC-N1` aplicados por `uci`; versões de hardware/software e tipo de ONU mantidos no padrão do projeto (`XZ000-G7 v1.0`, SFU). Configuração que funcionou com a fibra: ver [teste com a fibra](teste-fibra-2026-11-14.md) |
 
 O G7 continua sendo uma bridge: PPPoE, NAT e DHCP ficam no Huawei. O LuCI pede uma senha de root, porque a interface de gerenciamento fica acessível pela porta LAN.
 

@@ -2,7 +2,7 @@
 
 Esta tabela separa o que foi executado do que foi apenas sugerido. Uma tentativa proposta não deve ser interpretada como teste concluído.
 
-As próximas etapas estão no [plano de investigação](../plano/plano-2026-11-10.md). Os testes desse plano ainda não foram executados e não alteram os resultados históricos desta tabela. As duas últimas linhas registram ações de 13/11/2026 que preparam um caminho separado, com outro firmware.
+As próximas etapas estão no [plano de investigação](../plano/plano-2026-11-10.md). Os testes desse plano ainda não foram executados e não alteram os resultados históricos desta tabela. As três últimas linhas registram ações de 13 e 14/11/2026 em um caminho separado, com outro firmware.
 
 | Etapa | Objetivo | Evidência recuperada | Resultado / limite |
 |---|---|---|---|
@@ -24,7 +24,8 @@ As próximas etapas estão no [plano de investigação](../plano/plano-2026-11-1
 | Troca futura de ONU/perfil | Melhorar compatibilidade | Discussão hipotética | Nenhum teste após mudança documentado |
 | Reaproveitamento em fibra interna | Usar o G7 em outro papel | Discussão em agosto de 2025 | Explicações contraditórias; nenhuma topologia validada |
 | Backup da flash do G7 | Permitir retorno ao firmware de fábrica | `mtd0` lido duas vezes e `mtd1`–`mtd5` separados, com CRC32 conferido no G7 e no PC (13/11/2026) | Backup íntegro guardado em privado; não publicado |
-| OpenWrt sem adaptador serial | Obter pilha OMCI aberta e rastreável | Gravação pelo Telnet com [ferramentas próprias](../ferramentas/README.md); boot, SSH e LuCI observados (13/11/2026) | Instalação confirmada; serviço GPON na Vivo ainda não testado ([detalhes](openwrt-sem-adaptador-serial.md)) |
+| OpenWrt sem adaptador serial | Obter pilha OMCI aberta e rastreável | Gravação pelo Telnet com [ferramentas próprias](../ferramentas/README.md); boot, SSH e LuCI observados (13/11/2026) | Instalação confirmada ([detalhes](openwrt-sem-adaptador-serial.md)) |
+| Teste com a fibra (OpenWrt) | Substituir a MitraStar | 11 ensaios com MIB, captura OMCI e logs (14/11/2026) | **Internet funcionando pelo Huawei**: TM option 2, uma porta Ethernet e VLAN 10 marcada; reinício e estabilidade ainda não validados ([detalhes](teste-fibra-2026-11-14.md)) |
 
 ## Incidente confirmado: perda de Telnet
 

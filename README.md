@@ -2,7 +2,9 @@
 
 Registro da tentativa de substituir a MitraStar GPT-2741GNAC-N1 pelo TP-Link XZ000-G7, mantendo um Huawei WiFi Mesh 7 como roteador doméstico.
 
-**Resultado: a substituição não produziu uma conexão de internet funcional. A solução adotada foi manter a MitraStar em bridge.**
+**Resultado atual (14/11/2026): com o firmware OpenWrt `openwrt-galachip`, o G7 substituiu a MitraStar e o Huawei obteve internet por PPPoE.** A configuração ainda não passou pelo reinício de confirmação nem pela observação de estabilidade previstos no plano. Detalhes no [teste com a fibra](docs/teste-fibra-2026-11-14.md).
+
+Até 13/11/2026, com o firmware TP-Link/TripleOxygen, a substituição não tinha produzido conexão funcional, e a solução adotada era manter a MitraStar em bridge.
 
 Este repositório documenta o que foi tentado, os resultados observados, os problemas do diagnóstico e as dúvidas ainda abertas. Não é um tutorial validado de substituição de ONU.
 
@@ -14,10 +16,16 @@ Pretendida:
 Fibra da Vivo → TP-Link XZ000-G7 → Huawei WiFi Mesh 7 → dispositivos
 ```
 
-Adotada:
+Adotada até 13/11/2026:
 
 ```text
 Fibra da Vivo → MitraStar em bridge → Huawei WiFi Mesh 7 → dispositivos
+```
+
+Em teste desde 14/11/2026:
+
+```text
+Fibra da Vivo → G7 com OpenWrt (bridge, VLAN 10) → Huawei WiFi Mesh 7 → dispositivos
 ```
 
 ## Documentação
@@ -28,6 +36,7 @@ Fibra da Vivo → MitraStar em bridge → Huawei WiFi Mesh 7 → dispositivos
 - [Fontes e limites da reconstrução](docs/fontes.md)
 - [Firmware alternativo: levantamento e limites](docs/firmware-alternativo.md)
 - [OpenWrt no G7 sem adaptador serial](docs/openwrt-sem-adaptador-serial.md) e as [ferramentas usadas](ferramentas/README.md)
+- [Teste com a fibra em 14/11/2026: ensaios e configuração que funcionou](docs/teste-fibra-2026-11-14.md)
 
 ## Principais achados
 
@@ -37,7 +46,8 @@ Fibra da Vivo → MitraStar em bridge → Huawei WiFi Mesh 7 → dispositivos
 - Durante um teste de VLAN, desativar `br0` derrubou o Telnet. A perda e a posterior recuperação do acesso foram confirmadas pelo usuário.
 - Não há sucesso documentado com alteração de VLAN, MAC, serial do sistema ou cadastro por técnico.
 - Algumas orientações antigas eram contraditórias ou apresentavam hipóteses como certezas. Elas são registradas como parte do problema, não como instruções a seguir.
-- Existe um port de OpenWrt com pilha OMCI aberta para o G7 V1.0 de 4 MB, com rastreamento OMCI. Em 13/11/2026 ele foi instalado neste G7 sem adaptador serial, pelo Telnet do firmware TripleOxygen, depois de um backup completo e conferido da flash. O aparelho inicia e é gerenciável; o serviço GPON na Vivo ainda não foi testado.
+- Existe um port de OpenWrt com pilha OMCI aberta para o G7 V1.0 de 4 MB, com rastreamento OMCI. Em 13/11/2026 ele foi instalado neste G7 sem adaptador serial, pelo Telnet do firmware TripleOxygen, depois de um backup completo e conferido da flash. O aparelho inicia e é gerenciável.
+- Com o OpenWrt, a OLT só criou o caminho de dados depois que o G7 passou a anunciar `Traffic management option = 2`. Antes disso, o sintoma era o mesmo do histórico: O5 sem GEM de dados. Também foi preciso anunciar uma única porta Ethernet (com quatro, a tabela de serviços do hardware lotava) e marcar com VLAN 10 o tráfego do Huawei. A VLAN 30 recebida é de gerenciamento.
 - A MitraStar já estava em bridge em agosto de 2025; os testes pelo terminal foram retomados em fevereiro de 2026. Em março de 2026, o uso em bridge foi novamente confirmado.
 
 ## Como interpretar as evidências
