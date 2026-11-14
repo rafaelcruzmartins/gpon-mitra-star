@@ -2,7 +2,7 @@
 
 Executado em 14/11/2026. **Resultado: o XZ000-G7 com o OpenWrt do [`openwrt-galachip`](https://github.com/AliLostInTheDark/openwrt-galachip) substituiu a MitraStar. O Huawei WiFi Mesh 7 discou o PPPoE e a rede da casa passou a ter internet.**
 
-**Status: funcionando, ainda não validado pelos critérios da etapa 6 do [plano](../plano/plano-2026-11-10.md).** Faltam um reinício controlado com retorno automático do serviço e uma janela de observação de estabilidade.
+**Status: funcionando; reinício controlado confirmado.** Da etapa 6 do [plano](../plano/plano-2026-11-10.md), ainda falta a janela de observação de estabilidade.
 
 Instalação do firmware: [OpenWrt sem adaptador serial](openwrt-sem-adaptador-serial.md).
 
@@ -65,7 +65,7 @@ Observado no B11: estado O5, potência óptica de recepção −16,2 dBm e de tr
 
 ## Pendências para validar
 
-1. Reinício controlado do G7, confirmando O5, os dois serviços, VLAN 10 e PPPoE sem intervenção.
+1. ~~Reinício controlado do G7~~ **Feito em 14/11/2026:** sem nenhuma intervenção, a OLT reprovisionou (63 criações, nenhuma remoção) e, cerca de 80 s após o boot, o hardware tinha `LAN untagged <-> VLAN 10, GEM 136, T-CONT 2, bidirectional` e o serviço de gerenciamento na VLAN 30. O Huawei voltou a discar e a internet foi confirmada pelo Wi-Fi da casa.
 2. Observação de pelo menos 30 minutos, registrando quedas e renegociações.
 3. Opcional: remover uma a uma as opções não comprovadas, para chegar à configuração mínima.
 4. Manter a MitraStar guardada até a validação.

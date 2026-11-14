@@ -25,7 +25,7 @@ As próximas etapas estão no [plano de investigação](../plano/plano-2026-11-1
 | Reaproveitamento em fibra interna | Usar o G7 em outro papel | Discussão em agosto de 2025 | Explicações contraditórias; nenhuma topologia validada |
 | Backup da flash do G7 | Permitir retorno ao firmware de fábrica | `mtd0` lido duas vezes e `mtd1`–`mtd5` separados, com CRC32 conferido no G7 e no PC (13/11/2026) | Backup íntegro guardado em privado; não publicado |
 | OpenWrt sem adaptador serial | Obter pilha OMCI aberta e rastreável | Gravação pelo Telnet com [ferramentas próprias](../ferramentas/README.md); boot, SSH e LuCI observados (13/11/2026) | Instalação confirmada ([detalhes](openwrt-sem-adaptador-serial.md)) |
-| Teste com a fibra (OpenWrt) | Substituir a MitraStar | 11 ensaios com MIB, captura OMCI e logs (14/11/2026) | **Internet funcionando pelo Huawei**: TM option 2, uma porta Ethernet e VLAN 10 marcada; reinício e estabilidade ainda não validados ([detalhes](teste-fibra-2026-11-14.md)) |
+| Teste com a fibra (OpenWrt) | Substituir a MitraStar | 11 ensaios com MIB, captura OMCI e logs (14/11/2026) | **Internet funcionando pelo Huawei**: TM option 2, uma porta Ethernet e VLAN 10 marcada; reinício confirmado; estabilidade ainda não observada ([detalhes](teste-fibra-2026-11-14.md)) |
 
 ## Incidente confirmado: perda de Telnet
 

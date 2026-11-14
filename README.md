@@ -2,7 +2,7 @@
 
 Registro da tentativa de substituir a MitraStar GPT-2741GNAC-N1 pelo TP-Link XZ000-G7, mantendo um Huawei WiFi Mesh 7 como roteador doméstico.
 
-**Resultado atual (14/11/2026): com o firmware OpenWrt `openwrt-galachip`, o G7 substituiu a MitraStar e o Huawei obteve internet por PPPoE.** A configuração ainda não passou pelo reinício de confirmação nem pela observação de estabilidade previstos no plano. Detalhes no [teste com a fibra](docs/teste-fibra-2026-11-14.md).
+**Resultado atual (14/11/2026): com o firmware OpenWrt `openwrt-galachip`, o G7 substituiu a MitraStar e o Huawei obteve internet por PPPoE.** Um reinício controlado do G7 confirmou o retorno automático do serviço; a observação de estabilidade prevista no plano ainda está pendente. Detalhes no [teste com a fibra](docs/teste-fibra-2026-11-14.md).
 
 Até 13/11/2026, com o firmware TP-Link/TripleOxygen, a substituição não tinha produzido conexão funcional, e a solução adotada era manter a MitraStar em bridge.
 
