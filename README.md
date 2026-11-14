@@ -27,6 +27,7 @@ Fibra da Vivo → MitraStar em bridge → Huawei WiFi Mesh 7 → dispositivos
 - [Matriz de tentativas e resultados](docs/tentativas.md)
 - [Fontes e limites da reconstrução](docs/fontes.md)
 - [Firmware alternativo: levantamento e limites](docs/firmware-alternativo.md)
+- [OpenWrt no G7 sem adaptador serial](docs/openwrt-sem-adaptador-serial.md) e as [ferramentas usadas](ferramentas/README.md)
 
 ## Principais achados
 
@@ -36,7 +37,7 @@ Fibra da Vivo → MitraStar em bridge → Huawei WiFi Mesh 7 → dispositivos
 - Durante um teste de VLAN, desativar `br0` derrubou o Telnet. A perda e a posterior recuperação do acesso foram confirmadas pelo usuário.
 - Não há sucesso documentado com alteração de VLAN, MAC, serial do sistema ou cadastro por técnico.
 - Algumas orientações antigas eram contraditórias ou apresentavam hipóteses como certezas. Elas são registradas como parte do problema, não como instruções a seguir.
-- Existe um port de OpenWrt com pilha OMCI aberta para o G7 V1.0 de 4 MB, com rastreamento OMCI. Ele não foi testado aqui e não tem relato de uso na Vivo; está registrado como opção posterior de diagnóstico, não como solução.
+- Existe um port de OpenWrt com pilha OMCI aberta para o G7 V1.0 de 4 MB, com rastreamento OMCI. Em 13/11/2026 ele foi instalado neste G7 sem adaptador serial, pelo Telnet do firmware TripleOxygen, depois de um backup completo e conferido da flash. O aparelho inicia e é gerenciável; o serviço GPON na Vivo ainda não foi testado.
 - A MitraStar já estava em bridge em agosto de 2025; os testes pelo terminal foram retomados em fevereiro de 2026. Em março de 2026, o uso em bridge foi novamente confirmado.
 
 ## Como interpretar as evidências

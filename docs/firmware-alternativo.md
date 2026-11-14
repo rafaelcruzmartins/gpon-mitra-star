@@ -1,6 +1,6 @@
 # Firmware alternativo para o XZ000-G7: levantamento e limites
 
-Levantamento feito em 13/11/2026. **Status: pesquisa documental; nada foi instalado ou testado neste aparelho.**
+Levantamento feito em 13/11/2026. **Status: pesquisa documental.** Depois deste levantamento, no mesmo dia, o `openwrt-galachip` foi instalado neste G7 sem adaptador serial; ver [OpenWrt sem adaptador serial](openwrt-sem-adaptador-serial.md). O teste com a fibra da Vivo ainda não foi feito.
 
 O histórico não fecha a causa da falha porque faltam os logs OMCI completos (ver [histórico](historico.md), seção 8, e [plano](../plano/plano-2026-11-10.md), etapa 2.1). O firmware de fábrica usa um daemon OMCI fechado (`gc_omcid`), com pouca visibilidade. Este documento registra os firmwares e as ferramentas da comunidade que poderiam ampliar essa visibilidade, o que foi possível verificar em suas fontes e o que continua sem demonstração para a conexão Vivo.
 
@@ -51,6 +51,8 @@ O uso do Arduino Nano como ponte USB-serial (RESET ligado ao GND e divisor resis
 ## Como isso se encaixa no plano
 
 O plano mantém a instalação de firmware alternativo fora da sequência inicial. Este levantamento não muda essa decisão: trocar o firmware muda ao mesmo tempo a pilha OMCI, o caminho de dados e a identidade anunciada, então um resultado nele não explica a falha do firmware de fábrica.
+
+Na prática, as pré-condições abaixo foram cumpridas com uma exceção: não havia adaptador serial, e a instalação foi feita pelo Telnet com ferramentas próprias, aceitando que uma falha na gravação deixaria o aparelho parado até haver serial. Detalhes em [OpenWrt sem adaptador serial](openwrt-sem-adaptador-serial.md).
 
 O que muda é a disponibilidade de uma opção posterior com diagnóstico melhor. Ela só faz sentido se as etapas com o firmware atual não produzirem os logs necessários, e com estas condições:
 
