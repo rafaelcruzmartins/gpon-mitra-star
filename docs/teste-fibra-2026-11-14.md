@@ -63,10 +63,27 @@ As opções "não comprovadas" continuam ligadas porque a configuração complet
 
 Observado no B11: estado O5, potência óptica de recepção −16,2 dBm e de transmissão +1,8 dBm, PPPoE do Huawei estabelecido, navegação confirmada em dois aparelhos.
 
+## Instalação definitiva e queda do PPPoE do Huawei
+
+No mesmo dia, o G7 foi levado ao lugar definitivo e ligado **direto na WAN do Huawei**, sem o switch, e a MitraStar foi desligada. A internet funcionou logo depois da troca e caiu em seguida: o LED do Huawei ficou vermelho.
+
+| Verificação | Observado |
+|---|---|
+| Huawei (`GET /api/ntwk/wandetect`, lido pela rede da casa sem login) | `AccessStatus: Up` (link Ethernet com o G7), `ConnectionStatus: Connecting/Disconnected`, `ErrReason: ErrNoAnswer`: o Huawei enviava a descoberta PPPoE e não recebia resposta. Configuração da WAN sem VLAN, igual à que funcionou |
+| G7, acessado por um notebook ligado em um switch entre o G7 e o Huawei | O5 sem perda de sinal; `LAN untagged <-> VLAN 10, GEM 136, T-CONT 2, bidirectional` no hardware; VLAN em `tagged`/10; sondagem do próprio G7 recebeu PADO na VLAN 10 e DHCP na VLAN 30 |
+| Desligar e religar o G7 e recolocar o conector da fibra | Sem mudança no Huawei |
+| **Reiniciar o Huawei** | **PPPoE conectado** (`Connected`, `Success`) poucos minutos depois; repetido uma segunda vez com o mesmo resultado |
+
+O caminho G7 → OLT → concentrador PPPoE estava funcionando o tempo todo. O travamento foi do cliente PPPoE do Huawei, e o reinício dele resolveu. A causa não aparece nos dados coletados: pode ter relação com as trocas de cabo com o Huawei ligado, mas isso não foi verificado.
+
+Efeito colateral observado: enquanto o servidor que roda o DNS da casa estava sem o seu adaptador de rede, a rede ficou sem resolução de nomes mesmo depois de o PPPoE conectar. A WAN do Huawei usa só esse DNS. Com o adaptador devolvido, o DNS voltou.
+
+**Procedimento se a internet cair com o LED do Huawei vermelho:** reiniciar primeiro o Huawei. Só se não resolver, verificar o G7 por um aparelho no cabo entre o G7 e o Huawei, com IP fixo 192.168.1.x.
+
 ## Pendências para validar
 
 1. ~~Reinício controlado do G7~~ **Feito em 14/11/2026:** sem nenhuma intervenção, a OLT reprovisionou (63 criações, nenhuma remoção) e, cerca de 80 s após o boot, o hardware tinha `LAN untagged <-> VLAN 10, GEM 136, T-CONT 2, bidirectional` e o serviço de gerenciamento na VLAN 30. O Huawei voltou a discar e a internet foi confirmada pelo Wi-Fi da casa.
-2. Observação de pelo menos 30 minutos, registrando quedas e renegociações.
+2. Observação de pelo menos 30 minutos, registrando quedas e renegociações. A queda descrita acima ocorreu durante a instalação definitiva, com trocas de cabo, e foi do lado do Huawei; a observação em uso normal continua pendente.
 3. Opcional: remover uma a uma as opções não comprovadas, para chegar à configuração mínima.
 4. Manter a MitraStar guardada até a validação.
 
